@@ -20,6 +20,9 @@ class PendulumEnv(gym.Env):
         self.action_space = spaces.Box(low=-self.max_torque, high=self.max_torque, shape=(1,), dtype=np.float32)
         self.observation_space = spaces.Box(low=-high, high=high, dtype=np.float32)
 
+        # PATCHED
+        self.reset_state = None
+
         self.seed()
 
     def seed(self, seed=None):
@@ -46,9 +49,15 @@ class PendulumEnv(gym.Env):
         return self._get_obs(), -costs, False, {}
 
     def reset(self):
-        high = np.array([np.pi, 1])
-        self.state = self.np_random.uniform(low=-high, high=high)
-        self.last_u = None
+        if self.reset_state is None:
+            high = np.array([np.pi, 1])
+            self.state = self.np_random.uniform(low=-high, high=high)
+            self.last_u = None
+        else:
+            self.state = self.reset_state 
+        
+        self.reset_state = None
+
         return self._get_obs()
 
     def _get_obs(self):
