@@ -47,6 +47,9 @@ class Continuous_MountainCarEnv(gym.Env):
         self.observation_space = spaces.Box(low=self.low_state, high=self.high_state,
                                             dtype=np.float32)
 
+        # PATCHED
+        self.reset_state = None
+
         self.seed()
         self.reset()
 
@@ -79,7 +82,14 @@ class Continuous_MountainCarEnv(gym.Env):
         return self.state, reward, done, {}
 
     def reset(self):
-        self.state = np.array([self.np_random.uniform(low=-0.6, high=-0.4), 0])
+
+        # PATCHED
+        if self.reset_state is None:
+            self.state = np.array([self.np_random.uniform(low=-0.6, high=-0.4), 0])
+        else:
+            self.state = self.reset_state
+
+        self.reset_state = None
         return np.array(self.state)
 
 #    def get_state(self):

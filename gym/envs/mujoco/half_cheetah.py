@@ -31,4 +31,7 @@ class HalfCheetahEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         return self._get_obs()
 
     def viewer_setup(self):
-        self.viewer.cam.distance = self.model.stat.extent * 0.5
+        self.viewer.cam.distance = self.model.stat.extent * 2.5
+        #self.viewer.cam.trackbodyid = 1
+        # type = 2 => sphere
+        self.viewer.add_marker(pos=np.array([0, 0, 1]), rgba=tuple([.9, .1, .9, 1]), type=2, label=str('(0, 0)'))
