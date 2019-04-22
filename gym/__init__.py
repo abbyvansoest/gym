@@ -12,3 +12,5 @@ from gym.envs import make, spec, register
 from gym import logger
 
 __all__ = ["Env", "Space", "Wrapper", "make", "spec", "register"]
+
+print('Local Gym!!!!!')
